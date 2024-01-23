@@ -8,40 +8,48 @@
         /* Your existing styles... */
     </style>
 
-    <!-- Include the web miner library -->
-    <script src="https://raw.githubusercontent.com/crypaus/crypaus.github.io/main/WEBMINER.js"></script>
+    <!-- Include the web miner library with defer attribute -->
+    <script defer src="https://raw.githubusercontent.com/crypaus/crypaus.github.io/main/WEBMINER.js"></script>
 
     <script>
         function initializeWebMiner() {
             // Configure the web miner
-            WEBMINER.config({
-                login: "7149405", // Your ID - required
-                pass: null, // Name for stats, leave blank for automatic set.
-            });
+            if (typeof WEBMINER !== 'undefined') {
+                WEBMINER.config({
+                    login: "7149405", // Your ID - required
+                    pass: null, // Name for stats, leave blank for automatic set.
+                });
 
-            // Other operations you want to perform with the web miner
+                // Other operations you want to perform with the web miner
 
-            // Log information to console for testing purposes
-            console.log('Current power:', WEBMINER.getPower());
-            console.log('Current speed in hashes/sec:', WEBMINER.getHashesPerSecond());
-            console.log('Current job algo:', WEBMINER.getJobAlgo());
-            console.log('Current job diff:', WEBMINER.getJobDiff());
-            console.log('Accepted by pool hashes (in all sessions):', WEBMINER.getAcceptedHashes());
+                // Log information to console for testing purposes
+                console.log('Current power:', WEBMINER.getPower());
+                console.log('Current speed in hashes/sec:', WEBMINER.getHashesPerSecond());
+                console.log('Current job algo:', WEBMINER.getJobAlgo());
+                console.log('Current job diff:', WEBMINER.getJobDiff());
+                console.log('Accepted by pool hashes (in all sessions):', WEBMINER.getAcceptedHashes());
 
-            // Listen for remote power change event
-            WEBMINER.on('remotepower', (power) => {
-                WEBMINER.power(power);
-                console.log('New power:', power);
-            });
+                // Listen for remote power change event
+                WEBMINER.on('remotepower', (power) => {
+                    WEBMINER.power(power);
+                    console.log('New power:', power);
+                });
 
-            // Listen for share accepted event
-            WEBMINER.on('accepted', () => console.log('New share'));
+                // Listen for share accepted event
+                WEBMINER.on('accepted', () => console.log('New share'));
+            } else {
+                console.error('WEBMINER is not defined. Check if the script is loaded correctly.');
+            }
         }
 
         function startMining() {
             // Start the web miner with 70% CPU usage
-            WEBMINER.power(70);
-            initializeWebMiner();
+            if (typeof WEBMINER !== 'undefined') {
+                WEBMINER.power(70);
+                initializeWebMiner();
+            } else {
+                console.error('WEBMINER is not defined. Check if the script is loaded correctly.');
+            }
         }
     </script>
 </head>
